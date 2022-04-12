@@ -76,7 +76,7 @@ namespace DirCompare
         private void WriteInfo(IEnumerable<string> files, string comment)
         {
             Console.WriteLine(comment + "\r\n");
-            Console.WriteLine("Файлы:" + "\r\n");
+            Console.WriteLine("Files:" + "\r\n");
             foreach (string s in files)
             {
                 Console.WriteLine(s + "\r\n");
