@@ -11,6 +11,8 @@ namespace DirCompare
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.UTF8;
+
             var program = new FolderComparer();
             program.CompareAsync();
 
@@ -22,9 +24,9 @@ namespace DirCompare
     {
         public async void CompareAsync()
         {
-            Console.WriteLine("Введите первую папку:");
+            Console.WriteLine("Enter first folder:");
             string path1 = Console.ReadLine();
-            Console.WriteLine("Введите вторую папку:");
+            Console.WriteLine("Enter second folder:");
             string path2 = Console.ReadLine();
 
             if (Directory.Exists(path1) && Directory.Exists(path2))
@@ -39,12 +41,12 @@ namespace DirCompare
 
                 if (queryList1Only.Count() != 0 || queryList2Only.Count() != 0)
                 {
-                    WriteInfo(queryList1Only, "Только в " + path1 + ":");
-                    WriteInfo(queryList2Only, "Только в " + path2 + ":");
+                    WriteInfo(queryList1Only, "Only folder " + path1 + ":");
+                    WriteInfo(queryList2Only, "Only folder " + path2 + ":");
                 }
                 else
                 {
-                    Console.WriteLine("Различий нет \r\n");
+                    Console.WriteLine("Folders are equal \r\n");
                 }
             }
         }
