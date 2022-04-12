@@ -11,7 +11,9 @@ namespace DirCompare
     {
         static void Main(string[] args)
         {
-            Console.OutputEncoding = Encoding.UTF8;
+            // Cyrillic support
+            Console.OutputEncoding = System.Text.Encoding.GetEncoding("Cyrillic");
+            Console.InputEncoding = System.Text.Encoding.GetEncoding("Cyrillic");
 
             var program = new FolderComparer();
             program.CompareAsync();
@@ -41,8 +43,8 @@ namespace DirCompare
 
                 if (queryList1Only.Count() != 0 || queryList2Only.Count() != 0)
                 {
-                    WriteInfo(queryList1Only, "Only folder " + path1 + ":");
-                    WriteInfo(queryList2Only, "Only folder " + path2 + ":");
+                    WriteInfo(queryList1Only, "Only folder " + path1 + ": \r\n");
+                    WriteInfo(queryList2Only, "Only folder " + path2 + ": \r\n");
                 }
                 else
                 {
