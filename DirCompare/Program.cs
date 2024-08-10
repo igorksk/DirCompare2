@@ -12,8 +12,8 @@ namespace DirCompare
         static void Main(string[] args)
         {
             // Cyrillic support
-            Console.OutputEncoding = System.Text.Encoding.GetEncoding("Cyrillic");
-            Console.InputEncoding = System.Text.Encoding.GetEncoding("Cyrillic");
+            Console.OutputEncoding = Encoding.GetEncoding("Cyrillic");
+            Console.InputEncoding = Encoding.GetEncoding("Cyrillic");
 
             var program = new FolderComparer();
             program.CompareAsync();
