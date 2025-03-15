@@ -5,7 +5,7 @@ namespace DirCompare
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             // Cyrillic support
             Console.OutputEncoding = Encoding.GetEncoding("Cyrillic");
