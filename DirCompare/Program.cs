@@ -16,5 +16,5 @@ namespace DirCompare
 
             Console.ReadLine();
         }
-    }  
+    }
 }
