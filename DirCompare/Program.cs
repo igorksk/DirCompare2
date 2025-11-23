@@ -12,9 +12,7 @@ namespace DirCompare
             Console.InputEncoding = Encoding.GetEncoding("Cyrillic");
 
             var program = new FolderComparer();
-            program.CompareAsync();
-
-            Console.ReadLine();
+            program.CompareAsync().GetAwaiter().GetResult();
         }
     }
 }

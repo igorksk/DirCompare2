@@ -8,7 +8,7 @@ namespace DirCompare
 {
     internal class FolderComparer
     {
-        public async void CompareAsync()
+        public async Task CompareAsync()
         {
             Console.WriteLine("Enter first folder:");
             string path1 = Console.ReadLine();
@@ -17,18 +17,18 @@ namespace DirCompare
 
             if (Directory.Exists(path1) && Directory.Exists(path2))
             {
-                IEnumerable<FileInfo> list1 = await GetInitialListAsync(path1);
-                IEnumerable<FileInfo> list2 = await GetInitialListAsync(path2);
+                List<FileInfo> list1 = await GetInitialListAsync(path1);
+                List<FileInfo> list2 = await GetInitialListAsync(path2);
 
                 FileCompare myFileCompare = new FileCompare();
 
-                var queryList1Only = await GetResultListAsync(list1, list2, myFileCompare);
-                var queryList2Only = await GetResultListAsync(list2, list1, myFileCompare);
+                List<string> only1 = await GetResultListAsync(list1, list2, myFileCompare);
+                List<string> only2 = await GetResultListAsync(list2, list1, myFileCompare);
 
-                if (queryList1Only.Count() != 0 || queryList2Only.Count() != 0)
+                if (only1.Count != 0 || only2.Count != 0)
                 {
-                    WriteInfo(queryList1Only, "Only folder " + path1 + ": \r\n");
-                    WriteInfo(queryList2Only, "Only folder " + path2 + ": \r\n");
+                    WriteInfo(only1, "Only folder " + path1 + ": \r\n");
+                    WriteInfo(only2, "Only folder " + path2 + ": \r\n");
                 }
                 else
                 {
@@ -37,14 +37,14 @@ namespace DirCompare
             }
         }
 
-        private async Task<IEnumerable<FileInfo>> GetInitialListAsync(string path)
+        private async Task<List<FileInfo>> GetInitialListAsync(string path)
         {
-            return await Task.Run(() => GetInitialList(path));
+            return await Task.Run(() => GetInitialList(path).ToList());
         }
 
-        private async Task<IEnumerable<string>> GetResultListAsync(IEnumerable<FileInfo> list1, IEnumerable<FileInfo> list2, FileCompare myFileCompare)
+        private async Task<List<string>> GetResultListAsync(IEnumerable<FileInfo> list1, IEnumerable<FileInfo> list2, FileCompare myFileCompare)
         {
-            return await Task.Run(() => GetResultList(list1, list2, myFileCompare));
+            return await Task.Run(() => GetResultList(list1, list2, myFileCompare).ToList());
         }
 
         private IEnumerable<FileInfo> GetInitialList(string path)
@@ -56,7 +56,14 @@ namespace DirCompare
 
         private IEnumerable<string> GetResultList(IEnumerable<FileInfo> list1, IEnumerable<FileInfo> list2, FileCompare myFileCompare)
         {
-            return list1.Except(list2, myFileCompare).Select(x => x.FullName);
+            // Build a hash set from list2 to allow O(1) lookups using the provided comparer
+            var set2 = new HashSet<FileInfo>(list2, myFileCompare);
+
+            foreach (var f in list1)
+            {
+                if (!set2.Contains(f))
+                    yield return f.FullName;
+            }
         }
 
         private void WriteInfo(IEnumerable<string> files, string comment)
