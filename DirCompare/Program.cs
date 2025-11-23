@@ -13,6 +13,9 @@ namespace DirCompare
 
             var program = new FolderComparer();
             program.CompareAsync().GetAwaiter().GetResult();
+
+            Console.WriteLine("Press Enter to exit...");
+            Console.ReadLine();
         }
     }
 }
